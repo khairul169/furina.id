@@ -1,0 +1,9 @@
+.canvasContainer {
+  min-height: 80vh;
+  overflow: hidden;
+}
+
+.canvasContainer canvas {
+  width: 100%;
+  max-width: 800px;
+}

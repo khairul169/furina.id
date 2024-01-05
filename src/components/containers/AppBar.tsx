@@ -23,8 +23,8 @@ const AppBar = () => {
         </Link>
 
         <Navbar>
-          <NavbarItem path="/" title="Home" />
-          <NavbarItem path="/furina-beloved" title="My Furina" />
+          <NavbarItem path="/" title="Pet the Furina" />
+          <NavbarItem path="/furina-beloved" title="Shrimp" />
         </Navbar>
       </div>
     </header>
