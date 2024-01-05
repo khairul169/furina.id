@@ -1,0 +1,29 @@
+@keyframes rotating {
+  0%,
+  100% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes play-anim {
+  0% {
+    transform: scale(100%) rotate(0);
+  }
+  50% {
+    transform: scale(150%) rotate(150deg);
+  }
+  100% {
+    transform: scale(100%) rotate(360deg);
+  }
+}
+
+.rotatingAnims {
+  animation: rotating 3s infinite;
+}
+
+.playAnims {
+  animation: play-anim 2s infinite;
+}
