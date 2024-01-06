@@ -63,8 +63,8 @@ const game = async () => {
   stateMachine.add(STATE.MAIN_SCREEN, () => {
     const furina = new Sprite(tex.furinaCurious);
     furina.scale.set(0.6);
-    furina.anchor.set(0.5);
-    furina.position.set(screen.w * 0.5, screen.h * 0.4);
+    furina.anchor.set(0.5, 0.9);
+    furina.position.set(screen.w * 0.5, screen.h * 0.55);
 
     const btnStart = new Sprite(tex.uiBtnPlay);
     btnStart.scale.set(1.0);
@@ -95,6 +95,8 @@ const game = async () => {
       },
       loop(time) {
         btnStart.scale.set(1.0 + Math.sin(time) * 0.2);
+        furina.scale.y = 0.55 + Math.cos(time * 10) * 0.01;
+        furina.rotation = -0.005 + Math.cos(time * 5) * 0.01;
       },
       onEnd() {
         app.stage.removeChild(furina, btnStart, startText);
