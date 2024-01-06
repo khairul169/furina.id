@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { cn } from "@/utility/utils";
 import LoadingPage from "../misc/loading-page";
+import PageMetadata from "@/components/containers/PageMetadata";
 
 const HomePage = () => {
   const appRef = useRef<any>();
@@ -36,6 +37,12 @@ const HomePage = () => {
 
   return (
     <div>
+      <PageMetadata
+        title="Pet the Furina"
+        description="Play pet the furina meme game"
+        keywords="pet furina, pet the furina, pet the meme, furina pat pat, pat furina"
+      />
+
       {!isReady ? <LoadingPage /> : null}
 
       <div

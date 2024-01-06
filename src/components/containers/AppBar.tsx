@@ -24,7 +24,7 @@ const AppBar = () => {
 
         <Navbar>
           <NavbarItem path="/" title="Pet the Furina" />
-          <NavbarItem path="/furina-beloved" title="Shrimp" />
+          <NavbarItem path="/toodle" title="Toodle-oo~" />
         </Navbar>
       </div>
     </header>

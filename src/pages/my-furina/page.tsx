@@ -8,6 +8,7 @@ import skillAudio from "@/assets/audio/VO_JA_Furina_Elemental_Skill_1_04.ogg";
 import { cn, copyToClipboard, showToast } from "@/utility/utils";
 import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
+import PageMetadata from "@/components/containers/PageMetadata";
 
 const gameUID = "828243224";
 
@@ -19,6 +20,12 @@ const FurinaBelovedPage = () => {
 
   return (
     <div>
+      <PageMetadata
+        title="Toodle"
+        description="Eclair's Furina Build"
+        keywords="eclair, khairul, furina toodle"
+      />
+
       <section>
         <HeroBackground />
 

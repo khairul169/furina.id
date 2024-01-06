@@ -2,20 +2,22 @@ import { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import ErrorBoundaryPage from "./pages/errors/error-boundary/page";
-import NotFoundPage from "./pages/errors/not-found/page";
 
 const HomePage = lazy(() => import("./pages/home/page"));
-const FurinaBelovedPage = lazy(() => import("./pages/furina-beloved/page"));
+const MyFurinaPage = lazy(() => import("./pages/my-furina/page"));
 
 const router = createBrowserRouter([
   {
     Component: MainLayout,
     children: [
       { index: true, Component: HomePage },
-      { path: "/furina-beloved", Component: FurinaBelovedPage },
-      { path: "*", Component: NotFoundPage },
+      { path: "/toodle", Component: MyFurinaPage },
     ],
-    ErrorBoundary: ErrorBoundaryPage,
+    ErrorBoundary: () => (
+      <MainLayout>
+        <ErrorBoundaryPage />
+      </MainLayout>
+    ),
   },
 ]);
 
