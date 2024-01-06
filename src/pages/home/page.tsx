@@ -4,6 +4,8 @@ import styles from "./style.module.css";
 import { cn } from "@/utility/utils";
 import LoadingPage from "../misc/loading-page";
 import PageMetadata from "@/components/containers/PageMetadata";
+import Modal from "@/components/ui/Modal";
+import useModal from "@/hooks/useModal";
 
 const HomePage = () => {
   const appRef = useRef<any>();
@@ -60,37 +62,35 @@ const HomePage = () => {
 
 const Credits = () => {
   const [toggle, setToggle] = useState(false);
+  const modal = useModal();
 
   return (
     <div className="container pt-4 pb-16 border-t">
       <button
         type="button"
-        className={cn(
-          "border-primary-500 border text-sm rounded-lg px-4 py-2",
-          toggle ? "bg-primary-500 text-white" : ""
-        )}
-        onClick={() => setToggle(!toggle)}
+        className="border-primary-500 border text-sm rounded-lg px-4 py-2"
+        onClick={modal.onOpen}
       >
         Assets Credits
       </button>
 
-      {toggle ? (
-        <pre className="max-h-[200px] overflow-y-auto mt-4 font-sans">
+      <Modal {...modal} title="Big Thanks to:" size="xl">
+        <pre className="font-sans overflow-x-auto">
           {`
 Furina Stickers:
 Guido_ (https://risibank.fr/media/297778-genshin-archon-hydro-c6-r5-soutine)
 Coll5 (https://risibank.fr/media/317061-furina-focalor-genshin)
 
+Music:
+Kururin Furina Cover by Ariyutta (https://facebook.com/arbi.yudatama)
+pet the peepo by NitroiF (https://www.youtube.com/shorts/ll2Au3CdV2k)
+
 Hand Sprite:
 @soapmangraylace2752 (https://www.youtube.com/shorts/HEguW7Gmu2w)
 Fijiwaterhelp (https://jailbreak.fandom.com/wiki/User_blog:Fijiwaterhelp/hand_petting)
-
-Music:
-Kurururin by Raphiiel (https://www.youtube.com/watch?v=NY0ffyEu6uo)
-pet the peepo by NitroiF (https://www.youtube.com/shorts/ll2Au3CdV2k)
         `.trim()}
         </pre>
-      ) : null}
+      </Modal>
     </div>
   );
 };

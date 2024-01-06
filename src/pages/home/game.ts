@@ -3,12 +3,14 @@ import {
   AnimatedSprite,
   Application,
   Assets,
+  FederatedPointerEvent,
   Sprite,
   Text,
   TextStyle,
 } from "pixi.js";
 import StateMachine from "./stateMachine";
 import { Howl } from "howler";
+import { gameDataStore } from "./store";
 
 const IMG_URI = "/assets/images/";
 const UI_URI = "/assets/ui/";
@@ -28,6 +30,10 @@ const game = async () => {
     backgroundColor: "#fff",
   });
 
+  if (app.view.style) {
+    app.view.style.touchAction = "inherit";
+  }
+
   const handPetTextures = [...Array(10)].map((_, idx) => {
     const uri = `/handpet/handpet_${String(idx + 1).padStart(2, "0")}.webp`;
     return Assets.load(IMG_URI + uri);
@@ -46,12 +52,11 @@ const game = async () => {
 
   const sfx = {
     prepare: new Howl({
-      src: SFX_URI + "pet-the-peepo-prepare.ogg",
+      src: SFX_URI + "kururina-intro.mp3",
       preload: true,
     }),
     music: new Howl({
-      //   src: SFX_URI + "pet-the-peepo.ogg",
-      src: SFX_URI + "kuru-kuru-kururin.ogg",
+      src: SFX_URI + "kururina-loop.mp3",
       preload: true,
       loop: true,
     }),
@@ -78,20 +83,24 @@ const game = async () => {
     });
 
     const startText = new Text(
-      "Press to Play",
+      "Press to Pet Furina",
       new TextStyle({
-        fontSize: 28,
+        fontSize: 48,
+        fill: ["#fff"],
+        stroke: "#333",
+        lineJoin: "round",
+        strokeThickness: 12,
+        align: "center",
       })
     );
     startText.anchor.set(0.5);
-    startText.position.set(screen.w * 0.5, screen.h * 0.82);
+    startText.position.set(screen.w * 0.5, screen.h * 0.85);
 
     // let musicPlayTimeout: any;
 
     return {
       onStart() {
         app.stage.addChild(furina, btnStart, startText);
-        // musicPlayTimeout = setTimeout(() => sfx.music.play(), 100);
       },
       loop(time) {
         btnStart.scale.set(1.0 + Math.sin(time) * 0.2);
@@ -100,9 +109,6 @@ const game = async () => {
       },
       onEnd() {
         app.stage.removeChild(furina, btnStart, startText);
-
-        // clearTimeout(musicPlayTimeout);
-        // sfx.music.stop();
       },
     };
   });
@@ -127,13 +133,18 @@ const game = async () => {
     return {
       onStart() {
         app.stage.addChild(furina, hand);
+        sfx.prepare.play();
 
         timers.push(
           setTimeout(() => {
             furina.visible = true;
-            furinaPos.y = screen.h * 0.5;
-            sfx.prepare.play();
           }, 500)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            furinaPos.y = screen.h * 0.48;
+          }, 1200)
         );
 
         timers.push(
@@ -141,7 +152,7 @@ const game = async () => {
             furina.visible = false;
             hand.visible = true;
             handPos.y = screen.h * 0.5;
-          }, 1500)
+          }, 2500)
         );
 
         timers.push(
@@ -155,22 +166,36 @@ const game = async () => {
             hand.position.x = screen.w * 0.15;
             handPos.x = screen.w * 0.25;
             hand.scale.set(0.4);
-          }, 2400)
+          }, 3500)
         );
 
         timers.push(
           setTimeout(() => {
-            furinaPos.x = screen.w * 0.65;
-            furina.scale.set(0.45);
-            handPos.x = screen.w * 0.35;
+            handPos.x = screen.w * 0.28;
+            furinaPos.x = screen.w * 0.72;
+          }, 4500)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            handPos.x = screen.w * 0.3;
             hand.scale.set(0.45);
-          }, 3400)
+            furinaPos.x = screen.w * 0.7;
+            furina.scale.set(0.45);
+          }, 5500)
+        );
+
+        timers.push(
+          setTimeout(() => {
+            handPos.x = screen.w * 0.35;
+            furinaPos.x = screen.w * 0.65;
+          }, 6500)
         );
 
         timers.push(
           setTimeout(() => {
             stateMachine.start(STATE.RUNNING);
-          }, 4500)
+          }, 7500)
         );
       },
       loop(_, dt) {
@@ -197,30 +222,56 @@ const game = async () => {
 
     const handPet = new AnimatedSprite(tex.handPet);
     handPet.animationSpeed = 0.2;
-    handPet.scale.set(0.7);
-    handPet.anchor.set(0, 0.5);
-    handPet.position.set(0, screen.h * 0.34);
+    handPet.scale.set(0.6);
+    handPet.anchor.set(0.5, 0.6);
+    let handPetPos = { x: 240, y: 320 };
+    handPet.position.set(240, 320);
 
     const touchButtonGuide = new Sprite(tex.uiBtnTouch);
     touchButtonGuide.anchor.set(0.5, 1);
     touchButtonGuide.position.set(screen.w * 0.5, screen.h * 0.95);
 
+    let touchCount = gameDataStore.getState().score;
+    let lastTouch = 0.0;
+    let isTouching = false;
+
     const touchText = new Text(
-      "0",
+      String(touchCount),
       new TextStyle({
-        fontSize: 64,
+        fontSize: 80,
+        fill: ["#fff"],
+        stroke: "#333",
+        lineJoin: "round",
+        strokeThickness: 12,
+        align: "right",
       })
     );
-    touchText.anchor.set(1, 0);
-    touchText.position.set(screen.w * 0.9, screen.h * 0.1);
+    touchText.anchor.set(0.5, 0.8);
+    touchText.position.set(screen.w * 0.5, screen.h * 0.15);
 
-    let touchCount = 0;
-    let lastTouch = 0.0;
+    const onTouch = (e: FederatedPointerEvent) => {
+      handPetPos = { x: e.global.x, y: e.global.y };
+      isTouching = true;
 
-    const onTouch = () => {
+      gameDataStore.setState((state) => {
+        touchCount = state.score + 1;
+        return { score: touchCount };
+      });
+
       lastTouch = stateMachine.time;
-      touchCount += 1;
       touchText.text = String(touchCount);
+      touchText.scale.set(1.3);
+      touchText.rotation = 0.2;
+    };
+
+    const onPointerMove = (e: FederatedPointerEvent) => {
+      if (isTouching) {
+        handPetPos = { x: e.global.x, y: e.global.y };
+      }
+    };
+
+    const onTouchUp = () => {
+      isTouching = false;
     };
 
     return {
@@ -231,11 +282,18 @@ const game = async () => {
 
         sfx.music.play();
         app.stage.eventMode = "static";
+        app.stage.hitArea = app.screen;
         app.stage.cursor = "pointer";
         app.stage.on("pointerdown", onTouch);
+        app.stage.on("pointerup", onTouchUp);
+        app.stage.on("pointermove", onPointerMove);
       },
       loop(time, delta) {
-        if (time - lastTouch < 0.5) {
+        if (isTouching) {
+          lastTouch = time;
+        }
+
+        if (time - lastTouch < 0.8) {
           if (!handPet.playing) {
             handPet.play();
             handPet.visible = true;
@@ -245,6 +303,8 @@ const game = async () => {
           }
           furina.scale.y = 1 + Math.sin(time * 40) * 0.01;
           furina.rotation = -0.01 + Math.cos(time * 30) * 0.02;
+
+          lerpPos(handPet.position, handPetPos, 12 * delta);
         } else {
           if (handPet.playing) {
             handPet.stop();
@@ -260,6 +320,13 @@ const game = async () => {
         touchButtonGuide.scale.set(0.5 + Math.sin(time * 40) * 0.01);
         touchButtonGuide.position.y =
           screen.h * (0.92 + Math.cos(time * 40) * 0.01);
+
+        if (touchText.scale.x > 1.0) {
+          touchText.scale.set(Math.max(1.0, touchText.scale.x - 10 * delta));
+        }
+        if (touchText.rotation > 0.0) {
+          touchText.rotation = Math.max(0.0, touchText.rotation - 2 * delta);
+        }
       },
       onEnd() {
         handPet.stop();
@@ -269,6 +336,8 @@ const game = async () => {
         app.stage.eventMode = "auto";
         app.stage.cursor = "";
         app.stage.off("pointerdown", onTouch);
+        app.stage.off("pointerup", onTouchUp);
+        app.stage.off("pointermove", onPointerMove);
       },
     };
   });
