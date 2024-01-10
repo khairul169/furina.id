@@ -1,0 +1,13 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "./pocketbase serve",
+    "clean-migrations": "rm -rf pb_migrations && ./pocketbase migrate collections"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

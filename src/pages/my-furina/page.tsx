@@ -4,13 +4,18 @@ import buildImg from "@/assets/images/furina-build.webp";
 import furinaChibiImg from "@/assets/images/113932900_p0_master1200.webp";
 import copyIcon from "@/assets/icons/copy-outline.svg";
 import playIcon from "@/assets/icons/play-outline.svg";
-import skillAudio from "@/assets/audio/VO_JA_Furina_Elemental_Skill_1_04.ogg";
+import skillAudio from "@/assets/audio/VO_JA_Furina_Elemental_Burst_03.ogg";
 import { cn, copyToClipboard, showToast } from "@/utility/utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Howl } from "howler";
 import styles from "./style.module.css";
 import PageMetadata from "@/components/containers/PageMetadata";
 
 const gameUID = "828243224";
+const skillAudioSfx = new Howl({
+  src: skillAudio,
+  preload: true,
+});
 
 const FurinaBelovedPage = () => {
   const onCopyUID = () => {
@@ -132,47 +137,22 @@ const HeroBackground = () => {
 };
 
 const SkillAudioPlayer = () => {
-  const skillAudioRef = useRef<HTMLAudioElement>(null);
-  const playingTimeout = useRef<any>(null);
-  const [isPlaying, setPlaying] = useState(false);
-
-  const onPlayAudio = () => {
-    skillAudioRef.current?.play();
-    setPlaying(true);
-
-    if (playingTimeout.current) {
-      clearTimeout(playingTimeout.current);
-    }
-
-    playingTimeout.current = setTimeout(() => {
-      setPlaying(false);
-      playingTimeout.current = null;
-    }, 4000);
-  };
-
   return (
-    <>
-      <button
-        type="button"
-        className={`group flex flex-col items-center justify-center text-center border border-transparent hover:border-primary-500
+    <button
+      type="button"
+      className={`group flex flex-col items-center justify-center text-center border border-transparent hover:border-primary-500
              rounded-xl px-6 py-4 hover:shadow transition-all hover:text-orange-500 hover:scale-105 active:scale-100 active:translate-y-5`}
-        onClick={onPlayAudio}
-      >
-        <img
-          src={playIcon}
-          className={cn("h-8", isPlaying ? styles.playAnims : "")}
-        />
-        <p className="text-xl font-light mt-4">
-          ✮⋆{" "}
-          <span className="group-hover:text-purple-500">The curtain rises</span>{" "}
-          ✩ ₊˚
-        </p>
-      </button>
-
-      <audio ref={skillAudioRef}>
-        <source src={skillAudio} type="audio/ogg" />
-      </audio>
-    </>
+      onClick={() => skillAudioSfx.play()}
+    >
+      <img src={playIcon} className="h-8" />
+      <p className="text-xl font-light mt-4">
+        ✮⋆{" "}
+        <span className="group-hover:text-purple-500">
+          Let my name echo in song!
+        </span>{" "}
+        ✩ ₊˚
+      </p>
+    </button>
   );
 };
 

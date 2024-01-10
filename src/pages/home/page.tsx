@@ -65,7 +65,7 @@ const Credits = () => {
   const modal = useModal();
 
   return (
-    <div className="container pt-4 pb-16 border-t">
+    <div className="container pt-4 pb-16">
       <Button onClick={modal.onOpen}>Assets Credits</Button>
 
       <Modal {...modal} title="Big Thanks to:" size="xl">

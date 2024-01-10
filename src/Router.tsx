@@ -5,6 +5,7 @@ import ErrorBoundaryPage from "./pages/errors/error-boundary/page";
 
 const HomePage = lazy(() => import("./pages/home/page"));
 const MyFurinaPage = lazy(() => import("./pages/my-furina/page"));
+const ArtworksPage = lazy(() => import("./pages/artworks/page"));
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: HomePage },
       { path: "/toodle", Component: MyFurinaPage },
+      {
+        path: "/treasures",
+        children: [{ index: true, Component: ArtworksPage }],
+      },
     ],
     ErrorBoundary: () => (
       <MainLayout>

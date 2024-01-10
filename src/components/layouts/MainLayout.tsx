@@ -17,11 +17,8 @@ const MainLayout = ({ children }: ComponentProps<"div">) => {
           </Suspense>
         )}
 
-        <footer className="bg-primary-700 px-4 py-8 text-center">
+        <footer className="bg-primary-700 shadow relative z-10 px-4 py-8 text-center">
           <p className="text-sm text-white">
-            <a href="http://rul.sh/">
-              Made with <span className="text-red-300">♡</span> by Khairul.
-            </a>{" "}
             Artworks displayed belong to respective owners.
           </p>
         </footer>
