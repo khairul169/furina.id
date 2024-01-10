@@ -149,7 +149,7 @@ const Sheet = ({
             <SheetDescription>{description}</SheetDescription>
           ) : null}
         </SheetHeader>
-        <div className="h-[calc(100vh-60px)] overflow-y-auto">{children}</div>
+        <div className="h-[calc(100dvh-60px)] overflow-y-auto">{children}</div>
       </SheetContent>
     </SheetRoot>
   );
