@@ -1,6 +1,6 @@
 import pb from "@/utility/api";
 import { Howl } from "howler";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { Link } from "react-router-dom";
 import playIcon from "@/assets/icons/play-outline.svg";
 import openingSfx from "@/assets/audio/VO_JA_Furina_Opening_Treasure_Chest_02.ogg";
@@ -8,6 +8,10 @@ import ViewSheet from "./viewSheet";
 import useModal from "@/hooks/useModal";
 import LazyImage from "@/components/ui/LazyImage";
 import PageMetadata from "@/components/containers/PageMetadata";
+import { useMemo } from "react";
+import Button from "@/components/ui/Button";
+import { useBottomScrollListener } from "react-bottom-scroll-listener";
+import loadingIllust from "@/assets/images/l9fsdoa2j7vb1.gif";
 
 const openingChestSfx = new Howl({
   src: openingSfx,
@@ -15,12 +19,31 @@ const openingChestSfx = new Howl({
 });
 
 const ArtworksPage = () => {
-  const { data } = useQuery({
-    queryKey: ["artworks"],
-    queryFn: () =>
-      pb.collection("artworks").getList(1, 100, { sort: "-created" }),
-  });
+  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useInfiniteQuery({
+      queryKey: ["artworks"],
+      queryFn: ({ pageParam = 1 }) => {
+        return pb
+          .collection("artworks")
+          .getList(pageParam, 12, { sort: "-created" });
+      },
+      getNextPageParam: (lastPage) =>
+        lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
+    });
+  useBottomScrollListener<HTMLDivElement>(
+    () => {
+      if (!isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    { offset: 100 }
+  );
   const viewItemModal = useModal<string>();
+
+  const items = useMemo(
+    () => data?.pages.flatMap((i) => i.items) || [],
+    [data]
+  );
 
   return (
     <div className="container py-16">
@@ -43,7 +66,7 @@ const ArtworksPage = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-        {data?.items.map((item) => (
+        {items.map((item) => (
           <Link
             key={item.id}
             // to={`/treasures/${item.id}`}
@@ -65,6 +88,29 @@ const ArtworksPage = () => {
           </Link>
         ))}
       </div>
+
+      {hasNextPage && !isFetchingNextPage ? (
+        <div className="flex justify-center mt-8">
+          <Button
+            onClick={() => {
+              if (!isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+            variant="solid"
+            className="min-w-[200px]"
+          >
+            Load More
+          </Button>
+        </div>
+      ) : null}
+
+      {isFetchingNextPage ? (
+        <div className="flex flex-col justify-center items-center text-center mt-12 py-8">
+          <img src={loadingIllust} className="h-32 animate-bounce" />
+          <p className="mt-2">Loading next items..</p>
+        </div>
+      ) : null}
 
       <ViewSheet modal={viewItemModal} />
     </div>
