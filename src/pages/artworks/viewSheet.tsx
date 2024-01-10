@@ -24,7 +24,7 @@ const ViewSheet = ({ modal }: Props) => {
       {...modal}
       title="View Item"
       position="bottom"
-      className="rounded-t-none max-h-auto h-screen"
+      className="md:rounded-t-none h-[90vh] md:h-screen"
     >
       {isLoading ? (
         <div className="min-h-[320px] flex flex-col items-center justify-center text-center">
@@ -48,10 +48,7 @@ const ViewSheet = ({ modal }: Props) => {
           </div>
 
           <div className="md:w-1/3 border-t md:border-l md:border-t-0 py-4 md:pt-0 px-4 lg:px-8 overflow-y-auto">
-            <Button
-              className="hidden md:flex pl-2 md:mb-6"
-              onClick={modal.onClose}
-            >
+            <Button className="flex pl-2 mb-6" onClick={modal.onClose}>
               <ChevronLeft /> Back
             </Button>
 

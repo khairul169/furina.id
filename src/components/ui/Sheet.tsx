@@ -142,14 +142,17 @@ const Sheet = ({
 }: SheetProps) => {
   return (
     <SheetRoot open={isOpen} {...props}>
-      <SheetContent side={position} className={cn("rounded-t-2xl", className)}>
+      <SheetContent
+        side={position}
+        className={cn("flex flex-col gap-0 rounded-t-2xl", className)}
+      >
         <SheetHeader>
           {title ? <SheetTitle>{title}</SheetTitle> : null}
           {description ? (
             <SheetDescription>{description}</SheetDescription>
           ) : null}
         </SheetHeader>
-        <div className="h-[calc(100dvh-60px)] overflow-y-auto">{children}</div>
+        <div className="flex-1 overflow-y-auto">{children}</div>
       </SheetContent>
     </SheetRoot>
   );
