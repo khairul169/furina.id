@@ -62,10 +62,20 @@ const ViewSheet = ({ modal }: Props) => {
             <a
               href={data.srcUrl}
               target="_blank"
-              className="block mt-1 text-primary-500 font-medium hover:underline truncate"
+              className="block mt-1 link truncate"
             >
               {cleanUrl(data.srcUrl)}
             </a>
+
+            <p className="text-sm mt-8">
+              <i>Disclaimer:</i>
+              <br />I do not own this work of art. Please visit the original
+              post to see more from{" "}
+              <a href={data.srcUrl} target="_blank" className="link">
+                {data.artistName}
+              </a>
+              .
+            </p>
           </div>
         </div>
       )}

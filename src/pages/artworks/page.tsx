@@ -7,6 +7,7 @@ import openingSfx from "@/assets/audio/VO_JA_Furina_Opening_Treasure_Chest_02.og
 import ViewSheet from "./viewSheet";
 import useModal from "@/hooks/useModal";
 import LazyImage from "@/components/ui/LazyImage";
+import PageMetadata from "@/components/containers/PageMetadata";
 
 const openingChestSfx = new Howl({
   src: openingSfx,
@@ -23,6 +24,8 @@ const ArtworksPage = () => {
 
   return (
     <div className="container py-16">
+      <PageMetadata title="Treasures" />
+
       <h1 className="text-2xl">Treasures</h1>
       <div>
         <p className="italic inline">Take it. Ahem... I allow you!</p>
