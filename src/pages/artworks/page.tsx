@@ -53,7 +53,7 @@ const ArtworksPage = () => {
           >
             <LazyImage
               lazySrc={pb.files.getUrl(item, item.image, { thumb: "32x48" })}
-              src={pb.files.getUrl(item, item.image)}
+              src={pb.files.getUrl(item, item.image, { thumb: "256x384" })}
               className="w-full aspect-[0.8] object-cover"
             />
             <div className="absolute bottom-2 left-2 px-3 py-1 rounded-md bg-black/20 backdrop-blur-sm">
