@@ -20,7 +20,12 @@ const ViewSheet = ({ modal }: Props) => {
   });
 
   return (
-    <Sheet {...modal} title="View Item" position="bottom">
+    <Sheet
+      {...modal}
+      title="View Item"
+      position="bottom"
+      className="rounded-t-none max-h-auto h-screen"
+    >
       {isLoading ? (
         <div className="min-h-[320px] flex flex-col items-center justify-center text-center">
           <img src={loadingIllust} className="h-40 animate-bounce" />
@@ -32,12 +37,12 @@ const ViewSheet = ({ modal }: Props) => {
           <p className="mt-2">Cannot load item</p>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row">
-          <div className="flex-1 bg-gray-50">
-            <a href={data.srcUrl} target="_blank">
+        <div className="flex flex-col md:flex-row md:h-full">
+          <div className="flex-1 bg-gray-50 flex items-center justify-center">
+            <a href={data.srcUrl} target="_blank" className="w-full h-full">
               <img
                 src={pb.files.getUrl(data, data.image)}
-                className="w-full max-h-[80vh] object-contain"
+                className="w-full h-full object-contain"
               />
             </a>
           </div>

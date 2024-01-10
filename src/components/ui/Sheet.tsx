@@ -128,6 +128,7 @@ type SheetProps = React.ComponentProps<typeof SheetRoot> & {
   title?: string;
   description?: string;
   position?: SheetContentProps["side"];
+  className?: string;
 };
 
 const Sheet = ({
@@ -136,18 +137,19 @@ const Sheet = ({
   description,
   children,
   position,
+  className,
   ...props
 }: SheetProps) => {
   return (
     <SheetRoot open={isOpen} {...props}>
-      <SheetContent side={position} className="rounded-t-2xl">
+      <SheetContent side={position} className={cn("rounded-t-2xl", className)}>
         <SheetHeader>
           {title ? <SheetTitle>{title}</SheetTitle> : null}
           {description ? (
             <SheetDescription>{description}</SheetDescription>
           ) : null}
         </SheetHeader>
-        <div className="max-h-[90vh] overflow-y-auto">{children}</div>
+        <div className="h-[calc(100vh-60px)] overflow-y-auto">{children}</div>
       </SheetContent>
     </SheetRoot>
   );
