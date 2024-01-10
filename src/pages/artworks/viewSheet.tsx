@@ -47,7 +47,7 @@ const ViewSheet = ({ modal }: Props) => {
             </a>
           </div>
 
-          <div className="md:w-1/3 border-t md:border-l md:border-t-0 py-4 md:pt-0 pl-4 lg:pl-8 overflow-y-auto overflow-x-hidden truncate">
+          <div className="md:w-1/3 border-t md:border-l md:border-t-0 py-4 md:pt-0 px-4 lg:px-8 overflow-y-auto">
             <Button
               className="hidden md:flex pl-2 md:mb-6"
               onClick={modal.onClose}
@@ -67,7 +67,7 @@ const ViewSheet = ({ modal }: Props) => {
               {cleanUrl(data.srcUrl)}
             </a>
 
-            <p className="text-sm mt-8">
+            <p className="text-sm mt-8 w-full">
               <i>Disclaimer:</i>
               <br />I do not own this work of art. Please visit the original
               post to see more from{" "}
