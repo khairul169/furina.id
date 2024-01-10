@@ -6,6 +6,7 @@ import LoadingPage from "../misc/loading-page";
 import PageMetadata from "@/components/containers/PageMetadata";
 import Modal from "@/components/ui/Modal";
 import useModal from "@/hooks/useModal";
+import Button from "@/components/ui/Button";
 
 const HomePage = () => {
   const appRef = useRef<any>();
@@ -61,18 +62,11 @@ const HomePage = () => {
 };
 
 const Credits = () => {
-  const [toggle, setToggle] = useState(false);
   const modal = useModal();
 
   return (
     <div className="container pt-4 pb-16 border-t">
-      <button
-        type="button"
-        className="border-primary-500 border text-sm rounded-lg px-4 py-2"
-        onClick={modal.onOpen}
-      >
-        Assets Credits
-      </button>
+      <Button onClick={modal.onOpen}>Assets Credits</Button>
 
       <Modal {...modal} title="Big Thanks to:" size="xl">
         <pre className="font-sans overflow-x-auto">
