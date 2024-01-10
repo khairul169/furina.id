@@ -74,7 +74,11 @@ const ViewSheet = ({ modal }: Props) => {
               <a href={data.srcUrl} target="_blank" className="link">
                 {data.artistName}
               </a>
-              .
+              .<br />
+              Let me know if this artwork needs to be removed by emailing{" "}
+              <a href="mailto:khai@rul.sh" className="link">
+                khai@rul.sh
+              </a>
             </p>
           </div>
         </div>
