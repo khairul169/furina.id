@@ -12,6 +12,7 @@ import { useMemo } from "react";
 import Button from "@/components/ui/Button";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import loadingIllust from "@/assets/images/l9fsdoa2j7vb1.gif";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 const openingChestSfx = new Howl({
   src: openingSfx,
@@ -19,7 +20,7 @@ const openingChestSfx = new Howl({
 });
 
 const ArtworksPage = () => {
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
+  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
       queryKey: ["artworks"],
       queryFn: ({ pageParam = 1 }) => {
@@ -87,6 +88,12 @@ const ArtworksPage = () => {
             </div>
           </Link>
         ))}
+
+        {isLoading || isFetchingNextPage
+          ? [...Array(12)].map((_, idx) => (
+              <Skeleton key={idx} className="aspect-[0.8]" />
+            ))
+          : null}
       </div>
 
       {hasNextPage && !isFetchingNextPage ? (
@@ -102,13 +109,6 @@ const ArtworksPage = () => {
           >
             Load More
           </Button>
-        </div>
-      ) : null}
-
-      {isFetchingNextPage ? (
-        <div className="flex flex-col justify-center items-center text-center mt-12 py-8">
-          <img src={loadingIllust} className="h-32 animate-bounce" />
-          <p className="mt-2">Loading next items..</p>
         </div>
       ) : null}
 
