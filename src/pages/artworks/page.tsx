@@ -11,7 +11,6 @@ import PageMetadata from "@/components/containers/PageMetadata";
 import { useMemo } from "react";
 import Button from "@/components/ui/Button";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
-import loadingIllust from "@/assets/images/l9fsdoa2j7vb1.gif";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 const openingChestSfx = new Howl({

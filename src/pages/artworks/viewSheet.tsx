@@ -52,6 +52,14 @@ const ViewSheet = ({ modal }: Props) => {
               <ChevronLeft /> Back
             </Button>
 
+            {data.caption?.length > 0 ? (
+              <div className="my-4 border-b pb-4">
+                {data.caption.split("\n").map((text: string, idx: number) => (
+                  <p key={idx}>{text}</p>
+                ))}
+              </div>
+            ) : null}
+
             <Badge>Artist Name</Badge>
             <p className="mt-1 truncate">{data.artistName}</p>
 
