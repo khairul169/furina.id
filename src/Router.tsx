@@ -16,7 +16,10 @@ const router = createBrowserRouter([
       {
         path: "/treasures",
         Component: ArtworksPage,
-        children: [{ index: true }, { path: ":id" }],
+      },
+      {
+        path: "/treasures/:id",
+        Component: ArtworksPage,
       },
     ],
     ErrorBoundary: () => (

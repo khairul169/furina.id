@@ -5,6 +5,8 @@ import loadingIllust from "@/assets/images/l9fsdoa2j7vb1.gif";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { ChevronLeft } from "lucide-react";
+import LazyImage from "@/components/ui/LazyImage";
+import { useEffect, useState } from "react";
 
 type Props = {
   id?: string | null;
@@ -12,12 +14,19 @@ type Props = {
   onClose: () => void;
 };
 
-const ViewSheet = ({ id, isOpen, onClose }: Props) => {
+const ViewSheet = ({ id: viewId, isOpen, onClose }: Props) => {
+  const [id, setId] = useState(viewId);
   const { data, isLoading, isError } = useQuery({
     queryKey: ["artwork", id],
     queryFn: () => pb.collection("artworks").getOne(id || ""),
     enabled: !!id,
   });
+
+  useEffect(() => {
+    if (viewId) {
+      setId(viewId);
+    }
+  }, [viewId, setId]);
 
   return (
     <Sheet
@@ -45,14 +54,24 @@ const ViewSheet = ({ id, isOpen, onClose }: Props) => {
         <div className="flex flex-col md:flex-row md:h-full">
           <div className="flex-1 bg-gray-50 flex items-center justify-center">
             <a href={data.srcUrl} target="_blank" className="w-full h-full">
-              <img
+              <LazyImage
+                lazySrc={pb.files.getUrl(data, data.image, { thumb: "32x48" })}
                 src={pb.files.getUrl(data, data.image)}
                 className="w-full h-full object-contain"
+                containerClassName="w-full h-full"
+                placeholderClassName="scale-x-110 -translate-x-10"
+                placeholder={
+                  <div className="absolute z-10 inset-0 flex items-center justify-center">
+                    <p className="text-center bg-white py-1 px-2 rounded animate-bounce">
+                      Loading...
+                    </p>
+                  </div>
+                }
               />
             </a>
           </div>
 
-          <div className="md:w-1/3 border-t md:border-l md:border-t-0 py-4 md:pt-0 px-4 lg:px-8 overflow-y-auto">
+          <div className="md:w-1/3 border-t md:border-t-0 py-4 md:pt-0 px-4 lg:px-8 overflow-y-auto">
             <Button className="flex pl-2 mb-6" onClick={onClose}>
               <ChevronLeft /> Back
             </Button>
