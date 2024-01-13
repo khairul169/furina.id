@@ -41,12 +41,12 @@ const ViewSheet = ({ id: viewId, isOpen, onClose }: Props) => {
       className="md:rounded-t-none h-[90vh] md:h-screen"
     >
       {isLoading ? (
-        <div className="min-h-[320px] flex flex-col items-center justify-center text-center">
+        <div className="h-full flex flex-col items-center justify-center text-center">
           <img src={loadingIllust} className="h-40 animate-bounce" />
           <p className="mt-2">Please wait a moment...</p>
         </div>
       ) : isError || !data ? (
-        <div className="min-h-[320px] flex flex-col items-center justify-center text-center">
+        <div className="h-full flex flex-col items-center justify-center text-center">
           <h1 className="text-2xl">An error occured.</h1>
           <p className="mt-2">Cannot load item</p>
         </div>
@@ -71,7 +71,7 @@ const ViewSheet = ({ id: viewId, isOpen, onClose }: Props) => {
             </a>
           </div>
 
-          <div className="md:w-1/3 border-t md:border-t-0 py-4 md:pt-0 px-4 lg:px-8 overflow-y-auto">
+          <div className="md:w-1/3 border-t md:border-t-0 py-4 pt-8 md:pt-0 px-4 lg:px-8 overflow-y-auto md:relative z-10">
             <Button className="flex pl-2 mb-6" onClick={onClose}>
               <ChevronLeft /> Back
             </Button>
@@ -104,7 +104,7 @@ const ViewSheet = ({ id: viewId, isOpen, onClose }: Props) => {
                 {data.artistName}
               </a>
               .<br />
-              Let me know if this artwork needs to be removed by emailing{" "}
+              Let me know if this artwork needs to be removed to{" "}
               <a href="mailto:khai@rul.sh" className="link">
                 khai@rul.sh
               </a>

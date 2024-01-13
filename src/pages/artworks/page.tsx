@@ -2,7 +2,7 @@ import { Howl } from "howler";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import playIcon from "@/assets/icons/play-outline.svg";
 import openingSfx from "@/assets/audio/VO_JA_Furina_Opening_Treasure_Chest_02.ogg";
-import ViewSheet from "./viewSheet";
+import ViewSheet from "./ViewSheet";
 import PageMetadata from "@/components/containers/PageMetadata";
 import ArtworkListing from "./ArtworkListing";
 import { useCallback } from "react";

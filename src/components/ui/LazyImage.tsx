@@ -23,9 +23,9 @@ const LazyImage = ({
     <div className={cn("relative", containerClassName)}>
       <div
         className={cn(
-          "absolute inset-0 bg-no-repeat bg-cover blur-md z-0 transition-all duration-500",
-          placeholderClassName,
-          isLoaded ? "brightness-75" : ""
+          "absolute inset-0 bg-no-repeat bg-cover blur-md z-0",
+          // isLoaded ? "brightness-75" : "",
+          placeholderClassName
         )}
         style={{ backgroundImage: `url('${lazySrc}')` }}
       ></div>
@@ -35,7 +35,7 @@ const LazyImage = ({
       <img
         src={src}
         loading="lazy"
-        onLoad={() => setTimeout(() => setLoaded(true), 50)}
+        onLoad={() => setTimeout(() => setLoaded(true), 200)}
         className={cn(
           "transition-all duration-500 relative z-[1]",
           isLoaded ? "opacity-100" : "opacity-0",
