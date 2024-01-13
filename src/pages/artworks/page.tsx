@@ -1,11 +1,10 @@
 import pb from "@/utility/api";
 import { Howl } from "howler";
 import { useInfiniteQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import playIcon from "@/assets/icons/play-outline.svg";
 import openingSfx from "@/assets/audio/VO_JA_Furina_Opening_Treasure_Chest_02.ogg";
 import ViewSheet from "./viewSheet";
-import useModal from "@/hooks/useModal";
 import LazyImage from "@/components/ui/LazyImage";
 import PageMetadata from "@/components/containers/PageMetadata";
 import { useMemo } from "react";
@@ -19,6 +18,9 @@ const openingChestSfx = new Howl({
 });
 
 const ArtworksPage = () => {
+  const { id: viewArtId } = useParams();
+  const navigate = useNavigate();
+
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
       queryKey: ["artworks"],
@@ -38,7 +40,6 @@ const ArtworksPage = () => {
     },
     { offset: 100 }
   );
-  const viewItemModal = useModal<string>();
 
   const items = useMemo(
     () => data?.pages.flatMap((i) => i.items) || [],
@@ -47,7 +48,7 @@ const ArtworksPage = () => {
 
   return (
     <div className="container py-16">
-      <PageMetadata title="Treasures" />
+      <PageMetadata title={viewArtId ? "View Artwork" : "Treasures"} />
 
       <h1 className="text-2xl">Treasures</h1>
       <div>
@@ -69,13 +70,8 @@ const ArtworksPage = () => {
         {items.map((item) => (
           <Link
             key={item.id}
-            // to={`/treasures/${item.id}`}
-            to="#"
+            to={`/treasures/${item.id}`}
             className="bg-white rounded-lg shadow border border-gray-300 overflow-hidden hover:scale-105 transition-all relative"
-            onClick={(e) => {
-              e.preventDefault();
-              viewItemModal.onOpen(item.id);
-            }}
           >
             <LazyImage
               lazySrc={pb.files.getUrl(item, item.image, { thumb: "32x48" })}
@@ -111,7 +107,11 @@ const ArtworksPage = () => {
         </div>
       ) : null}
 
-      <ViewSheet modal={viewItemModal} />
+      <ViewSheet
+        isOpen={viewArtId != null}
+        id={viewArtId}
+        onClose={() => navigate("/treasures")}
+      />
     </div>
   );
 };

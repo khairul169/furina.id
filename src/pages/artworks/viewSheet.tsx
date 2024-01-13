@@ -1,5 +1,4 @@
 import Sheet from "@/components/ui/Sheet";
-import useModal from "@/hooks/useModal";
 import pb from "@/utility/api";
 import { useQuery } from "react-query";
 import loadingIllust from "@/assets/images/l9fsdoa2j7vb1.gif";
@@ -8,11 +7,12 @@ import Button from "@/components/ui/Button";
 import { ChevronLeft } from "lucide-react";
 
 type Props = {
-  modal: ReturnType<typeof useModal<string>>;
+  id?: string | null;
+  isOpen?: boolean;
+  onClose: () => void;
 };
 
-const ViewSheet = ({ modal }: Props) => {
-  const id = modal.data;
+const ViewSheet = ({ id, isOpen, onClose }: Props) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["artwork", id],
     queryFn: () => pb.collection("artworks").getOne(id || ""),
@@ -21,7 +21,12 @@ const ViewSheet = ({ modal }: Props) => {
 
   return (
     <Sheet
-      {...modal}
+      isOpen={isOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
       title="View Item"
       position="bottom"
       className="md:rounded-t-none h-[90vh] md:h-screen"
@@ -48,7 +53,7 @@ const ViewSheet = ({ modal }: Props) => {
           </div>
 
           <div className="md:w-1/3 border-t md:border-l md:border-t-0 py-4 md:pt-0 px-4 lg:px-8 overflow-y-auto">
-            <Button className="flex pl-2 mb-6" onClick={modal.onClose}>
+            <Button className="flex pl-2 mb-6" onClick={onClose}>
               <ChevronLeft /> Back
             </Button>
 

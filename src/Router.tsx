@@ -15,7 +15,8 @@ const router = createBrowserRouter([
       { path: "/toodle", Component: MyFurinaPage },
       {
         path: "/treasures",
-        children: [{ index: true, Component: ArtworksPage }],
+        Component: ArtworksPage,
+        children: [{ index: true }, { path: ":id" }],
       },
     ],
     ErrorBoundary: () => (
