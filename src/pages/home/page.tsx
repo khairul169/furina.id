@@ -32,14 +32,15 @@ const BackgroundSlideshow = () => {
 
       return items.map((item) => {
         const artwork = item.expand?.artwork;
-        return pb.files.getUrl(artwork, artwork?.image);
+        const img = pb.files.getUrl(artwork, artwork?.image);
+        return { ...artwork, src: img };
       });
     },
     refetchOnWindowFocus: false,
   });
 
   const [currentIdx, setCurrentIdx] = useState(0);
-  const curImg = wallpapers?.[currentIdx];
+  const curArtwork = wallpapers?.[currentIdx];
 
   useEffect(() => {
     if (!wallpapers) {
@@ -63,16 +64,19 @@ const BackgroundSlideshow = () => {
         className="h-4 md:h-8 absolute top-6 left-6 md:top-8 md:left-8 lg:left-[5%] lg:top-[5%] z-[5]"
       />
 
-      {curImg ? <BackgroundImage src={curImg} /> : null}
+      {curArtwork ? (
+        <BackgroundImage src={curArtwork?.src} artwork={curArtwork} />
+      ) : null}
     </>
   );
 };
 
 type BackgroundImageProps = {
   src: string;
+  artwork: any;
 };
 
-const BackgroundImage = ({ src }: BackgroundImageProps) => {
+const BackgroundImage = ({ src, artwork }: BackgroundImageProps) => {
   const lastChangeRef = useRef<Date | null>(null);
   const [isLoaded, setLoaded] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
@@ -109,7 +113,14 @@ const BackgroundImage = ({ src }: BackgroundImageProps) => {
           isLoaded ? "opacity-100" : "opacity-0"
         )}
         style={{ backgroundImage: `url('${imgSrc}')` }}
-      ></div>
+      >
+        <a
+          href={artwork.srcUrl}
+          className="text-white absolute bottom-4 left-4 md:left-8 text-sm opacity-80 hover:opacity-100 [text-shadow:_0_1px_5px_rgb(0_0_0_/_60%)]"
+        >
+          {`Illustration by ${artwork.artistName}`}
+        </a>
+      </div>
     </>
   );
 };
