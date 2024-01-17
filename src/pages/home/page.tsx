@@ -2,7 +2,7 @@ import titleImg from "@/assets/images/title-img.svg";
 import PageMetadata from "@/components/containers/PageMetadata";
 import { cn } from "@/utility/utils";
 import dayjs from "dayjs";
-import { ComponentProps, useEffect, useMemo, useState } from "react";
+import { ComponentProps, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { icons } from "./icons";
 import { useQuery } from "react-query";
@@ -20,6 +20,8 @@ const HomePage = () => {
 };
 
 const BackgroundSlideshow = () => {
+  const slideshowTimer = 10000;
+
   const { data: wallpapers } = useQuery({
     queryKey: ["wallpapers"],
     queryFn: async () => {
@@ -36,6 +38,23 @@ const BackgroundSlideshow = () => {
     refetchOnWindowFocus: false,
   });
 
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const curImg = wallpapers?.[currentIdx];
+
+  useEffect(() => {
+    if (!wallpapers) {
+      return;
+    }
+
+    const intv = setInterval(() => {
+      setCurrentIdx((cur) => (cur + 1) % wallpapers.length);
+    }, slideshowTimer);
+
+    return () => {
+      clearInterval(intv);
+    };
+  }, [wallpapers, slideshowTimer]);
+
   return (
     <>
       <img
@@ -44,9 +63,7 @@ const BackgroundSlideshow = () => {
         className="h-4 md:h-8 absolute top-6 left-6 md:top-8 md:left-8 lg:left-[5%] lg:top-[5%] z-[5]"
       />
 
-      {wallpapers && wallpapers?.length > 0 ? (
-        <BackgroundImage src={wallpapers[0]} />
-      ) : null}
+      {curImg ? <BackgroundImage src={curImg} /> : null}
     </>
   );
 };
@@ -56,22 +73,42 @@ type BackgroundImageProps = {
 };
 
 const BackgroundImage = ({ src }: BackgroundImageProps) => {
+  const lastChangeRef = useRef<Date | null>(null);
   const [isLoaded, setLoaded] = useState(false);
+  const [imgSrc, setImgSrc] = useState("");
+
+  useEffect(() => {
+    setLoaded(false);
+    lastChangeRef.current = new Date();
+  }, [src]);
+
+  const onLoaded = () => {
+    setLoaded(true);
+    setImgSrc(src);
+  };
+
   return (
     <>
       <img
         src={src}
         alt="img"
         className="hidden"
-        onLoad={() => setTimeout(() => setLoaded(true), 100)}
+        onLoad={() => {
+          let timer = lastChangeRef.current
+            ? new Date().getMilliseconds() -
+              lastChangeRef.current.getMilliseconds()
+            : 100;
+          timer = Math.max(500, Math.min(timer, 1000));
+          setTimeout(onLoaded, timer);
+        }}
       />
 
       <div
         className={cn(
-          "absolute w-[100vw] bg-center bg-cover inset-0 opacity-0 transition-opacity duration-500",
-          isLoaded ? "opacity-100" : ""
+          "absolute w-[100vw] bg-center bg-cover inset-0 transition-opacity duration-500",
+          isLoaded ? "opacity-100" : "opacity-0"
         )}
-        style={{ backgroundImage: `url('${src}')` }}
+        style={{ backgroundImage: `url('${imgSrc}')` }}
       ></div>
     </>
   );
