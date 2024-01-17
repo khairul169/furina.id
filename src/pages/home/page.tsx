@@ -33,6 +33,7 @@ const BackgroundSlideshow = () => {
         return pb.files.getUrl(artwork, artwork?.image);
       });
     },
+    refetchOnWindowFocus: false,
   });
 
   return (
