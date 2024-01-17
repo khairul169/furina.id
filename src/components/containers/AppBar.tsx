@@ -23,7 +23,8 @@ const AppBar = () => {
         </Link>
 
         <Navbar>
-          <NavbarItem path="/" title="Pet the Furina" />
+          <NavbarItem path="/" title="Home" />
+          <NavbarItem path="/pat-pat" title="Pat Furina" />
           <NavbarItem path="/treasures" title="Treasures‧₊˚" />
           <NavbarItem path="/toodle" title="Toodle-oo~" />
         </Navbar>
@@ -53,7 +54,7 @@ const NavbarItem = ({ path, title, isExact = true }: NavbarItemProps) => {
   return (
     <Link
       to={path}
-      className="group flex flex-shrink-0 items-center px-2 md:px-0 md:py-4 first:ml-auto last:mr-auto"
+      className="group flex flex-shrink-0 items-center px-2 md:py-4 first:ml-auto last:mr-auto md:first:ml-0 md:last:mr-0"
     >
       <img
         src={ahogeImg}
@@ -66,7 +67,7 @@ const NavbarItem = ({ path, title, isExact = true }: NavbarItemProps) => {
 
       <p
         className={cn(
-          "text-white ml-2 md:ml-4 md:text-xl py-2 md:py-0 border-b-2 md:border-dotted group-hover:border-primary-500 border-transparent transition-all",
+          "text-white ml-2 md:ml-4 py-2 md:py-0 border-b-2 md:border-dotted group-hover:border-primary-500 border-transparent transition-all",
           isActive ? "border-primary-500 md:border-white" : ""
         )}
       >

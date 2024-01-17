@@ -10,7 +10,11 @@ type PageMetadataProps = {
 const PageMetadata = (props: PageMetadataProps) => {
   return (
     <Helmet>
-      <title>{[props.title, "Furina.id"].filter((i) => !!i).join(" - ")}</title>
+      <title>
+        {props.title
+          ? [props.title, "Furina.id"].join(" - ")
+          : "Welcome to Furina.id"}
+      </title>
       <meta
         name="description"
         content={props.description || "Welcome to Furina.id"}
