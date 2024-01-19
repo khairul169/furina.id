@@ -173,7 +173,7 @@ const AppNav = ({ className }: ComponentProps<"div">) => {
   return (
     <div
       className={cn(
-        "flex items-start justify-center lg:justify-start flex-wrap gap-3 md:gap-x-4 lg:gap-x-6",
+        "flex items-start justify-center lg:justify-start flex-wrap gap-3 gap-x-5 lg:gap-x-6",
         className
       )}
     >
