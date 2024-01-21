@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { icons } from "./icons";
 import { useQuery } from "react-query";
 import pb from "@/utility/api";
+import { getGreetingByTime } from "./utils";
 
 const HomePage = () => {
   return (
@@ -138,19 +139,7 @@ const DateTime = () => {
   }, [setTime]);
 
   const message = useMemo(() => {
-    const hours = time.getHours();
-    let msg = "Day";
-
-    if (hours >= 18 && hours <= 2) {
-      msg = "Night";
-    } else if (hours > 2 && hours <= 9) {
-      msg = "Morning";
-    } else if (hours > 9 && hours <= 15) {
-      msg = "Day";
-    } else if (hours > 15 && hours < 18) {
-      msg = "Evening";
-    }
-
+    let msg = getGreetingByTime(time);
     return `Good ${msg}~ 💧✨`;
   }, [time]);
 
