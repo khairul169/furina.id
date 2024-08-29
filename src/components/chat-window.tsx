@@ -144,7 +144,8 @@ const ChatWindow = () => {
       <div
         ref={containerRef}
         className={cn(
-          "bg-white/20 border border-white/20 shadow-lg rounded-lg backdrop-blur-md absolute bottom-[10px] sm:bottom-1/4 left-[10px] sm:left-[10%] w-[calc(100%-20px)] sm:max-w-[320px] h-[80vh] sm:h-[300px] lg:max-w-[400px] lg:h-[350px] flex flex-col items-stretch overflow-hidden transition-transform sm:transition-none translate-y-[110%] sm:translate-y-0",
+          "bg-white/20 border border-white/20 shadow-lg rounded-lg backdrop-blur-md absolute bottom-[10px] sm:bottom-1/4 left-[10px] sm:left-[10%] w-[calc(100%-20px)] sm:max-w-[320px] h-[80vh] sm:h-[300px] lg:max-w-[400px] lg:h-[350px] flex flex-col items-stretch overflow-hidden transition-all ease-linear sm:traansition-none translate-y-[110%] sm:translate-y-0 opacity-100",
+          messages == null && "-translate-x-8 opacity-0",
           isOpen && "translate-y-0"
         )}
       >

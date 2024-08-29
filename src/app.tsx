@@ -8,8 +8,15 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import { CloudSun, GitPullRequest } from "lucide-react";
+import { cn } from "./utils";
 
 const App = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <div
       className="bg-[#353771] min-h-screen max-h-[100dvh] overflow-hidden relative"
@@ -52,7 +59,10 @@ const App = () => {
         <div className="animate-[updown_8s_ease-in-out_infinite] w-full">
           <img
             src={furinaImg}
-            className="max-h-screen w-full aspect-[0.666] object-contain -translate-x-1/2"
+            className={cn(
+              "max-h-screen w-full aspect-[0.666] object-contain -translate-x-1/2 transition-all ease-out duration-500",
+              isMounted ? "opacity-100" : "opacity-0 scale-110"
+            )}
           />
         </div>
       </ParallaxView>
@@ -63,7 +73,13 @@ const App = () => {
           className="absolute top-0 md:top-[10%] left-[10%] md:left-[1%]"
         >
           <div className="animate-[wiggle_10s_ease-in-out_infinite] pointer-events-none">
-            <img src={logo} className="w-[120px] md:w-[200px]" />
+            <img
+              src={logo}
+              className={cn(
+                "w-[120px] md:w-[200px] transition-all delay-100 duration-300",
+                isMounted ? "opacity-100" : "opacity-0"
+              )}
+            />
           </div>
         </ParallaxView>
 
@@ -91,7 +107,12 @@ const App = () => {
           </a>
         </p>
 
-        <Clock />
+        <Clock
+          className={cn(
+            "transition-all delay-200 duration-500",
+            isMounted ? "opacity-100" : "opacity-0"
+          )}
+        />
       </div>
 
       <ChatWindow />
@@ -99,7 +120,11 @@ const App = () => {
   );
 };
 
-const Clock = () => {
+type ClockProps = {
+  className?: string;
+};
+
+const Clock = ({ className }: ClockProps) => {
   const [time, setTime] = useState(new Date());
   const { data: weather } = useQuery({
     queryKey: ["forecast"],
@@ -125,7 +150,10 @@ const Clock = () => {
   return (
     <ParallaxView
       depth={0.01}
-      className="bg-white/10 border border-white/40 backdrop-blur-sm text-white p-4 rounded-lg absolute right-4 md:right-0 bottom-24 md:bottom-[10%]"
+      className={cn(
+        "bg-white/10 border border-white/40 backdrop-blur-sm text-white p-4 rounded-lg absolute right-4 md:right-0 bottom-24 md:bottom-[10%]",
+        className
+      )}
     >
       <p className="text-right">{dayjs(time).format("dddd, DD MMM YYYY")}</p>
 
